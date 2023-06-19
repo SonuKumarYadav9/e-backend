@@ -5,13 +5,17 @@ const jwt = require("jsonwebtoken");
 const authMiddleware = async (req, res, next) => {
   try {
     const { authorization } = req.headers;
+    console.log(authorization)
 
     if (authorization && authorization.startsWith("Bearer")) {
       let token = authorization.split(" ")[1];
       const { userID } = jwt.verify(token, process.env.SECRET_KEY);
 
       const admin = await adminModel.findById(userID).select("--password");
+      console.log(admin)
       const user = await userModel.findById(userID).select("--password");
+      console.log(user)
+
 
       if (admin) {
         req.user = admin;

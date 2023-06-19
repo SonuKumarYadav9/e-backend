@@ -90,6 +90,7 @@ const generateDailyReport = async (req, res) => {
         console.log("No daily report found");
         return;
       }
+      
   
       const report = dailyReport[0]; // Assuming only one daily report is generated
   

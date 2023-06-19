@@ -1,9 +1,7 @@
 const userModel = require("../models/userModel");
 const jwt = require("jsonwebtoken");
 const bcrypt = require("bcrypt");
-const otpModel = require("../models/otp")
-
-
+const otpModel = require("../models/otp");
 
 const {
   namRegex,
@@ -24,6 +22,7 @@ const createUser = async (req, res) => {
       name,
       email,
       password,
+      pin,
       role,
       mobile,
       account,
@@ -68,6 +67,7 @@ const createUser = async (req, res) => {
         .status(400)
         .send({ status: false, msg: "Please enter a valid email" });
     }
+
 
     let checkEmail = await userModel.findOne({ email: email });
     console.log(checkEmail);
@@ -130,11 +130,15 @@ const createUser = async (req, res) => {
     }
 
     if (!cityRegex(district)) {
-      return res.status(400).send({ status: false, msg: "Please enter a valid District" });
+      return res
+        .status(400)
+        .send({ status: false, msg: "Please enter a valid District" });
     }
 
     if (!stateRegex(state)) {
-      return res.status(400).send({ status: false, msg: "Please enter a valid State" });
+      return res
+        .status(400)
+        .send({ status: false, msg: "Please enter a valid State" });
     }
 
     // if (!pincodeRegex(pinCode)) {
@@ -142,10 +146,12 @@ const createUser = async (req, res) => {
     // }
 
     password = await bcrypt.hash(password, 10);
+    pin = await bcrypt.hash(pin, 10);
 
     const newUser = new userModel({
       name: name,
       password: password,
+      pin: pin,
       email: email,
       mobile: mobile,
       account: account,
@@ -188,6 +194,7 @@ const createUser = async (req, res) => {
 };
 
 //*USER LOGIN
+
 const userLogin = async (req, res) => {
   try {
     let { email, password, role } = req.body;
@@ -206,17 +213,17 @@ const userLogin = async (req, res) => {
       }
 
       if (user.role === role) {
-        // Generate OTP
+        //*! Generate OTP
         const generatedOTP = Math.floor(100000 + Math.random() * 900000);
 
-        // Save OTP in the database
+        //*! Save OTP in the database
         const otpData = new otpModel({
           userId: user._id,
           otp: generatedOTP,
         });
         await otpData.save();
 
-        // Delete OTP after one minute
+        //*! Delete OTP after one minute
         setTimeout(async () => {
           await otpModel.findOneAndDelete({ userId: user._id });
         }, 60000); // 1 minute
@@ -229,22 +236,26 @@ const userLogin = async (req, res) => {
           { expiresIn: "2d" }
         );
 
-        // Construct the redirect URL with the generated OTP
+        //*! Construct the redirect URL with the generated OTP
         const redirectURL = `/otp-verify?userID=${user._id}&otp=${generatedOTP}`;
 
         return res.status(200).send({
           status: true,
           msg: "Enter your OTP",
           redirectURL: redirectURL,
-          token:token,
-          userId:user._id,
-          name:user.name
+          token: token,
+          userId: user._id,
+          name: user.name,
         });
       } else {
-        return res.status(404).send({ status: false, msg: "Please Provide User role" });
+        return res
+          .status(404)
+          .send({ status: false, msg: "Please Provide User role" });
       }
     } else {
-      return res.status(400).json({ message: "Please select a valid role: MASTER, DISTRIBUTER, RETAILER" });
+      return res.status(400).json({
+        message: "Please select a valid role: MASTER, DISTRIBUTER, RETAILER",
+      }); 
     }
   } catch (error) {
     console.log(error);
@@ -256,7 +267,7 @@ const checkOTP = async (req, res) => {
   try {
     const { userID, otp, token, name: encodedName } = req.query;
 
-    // Find the OTP data in the database for the given user ID
+    //*! Find the OTP data in the database for the given user ID
     const otpData = await otpModel.findOne({ userId: userID });
 
     console.log(otpData);
@@ -264,15 +275,15 @@ const checkOTP = async (req, res) => {
       return res.status(404).json({ message: "OTP not found" });
     }
 
-    // Convert the otp value to a number using parseInt()
+    //*! Convert the otp value to a number using parseInt()
     const enteredOTP = parseInt(otp, 10);
 
-    // Check if the provided OTP matches the stored OTP
+    //*! Check if the provided OTP matches the stored OTP
     if (enteredOTP === otpData.otp) {
-      // Remove the OTP data from the database
+      //*! Remove the OTP data from the database
       await otpData.deleteOne();
 
-      const decodedName = decodeURIComponent(encodedName); // Use decodeURIComponent to decode the URL-encoded name
+      const decodedName = decodeURIComponent(encodedName); //*! Use decodeURIComponent to decode the URL-encoded name
 
       return res.status(200).json({
         message: "Login Success",
@@ -289,34 +300,32 @@ const checkOTP = async (req, res) => {
   }
 };
 
-
-
-
-
 const getUserById = async (req, res) => {
   try {
     let userId = req.params.id;
     let user = await userModel.findById(userId).select("-password");
+
+    // console.log(user)
+
     if (!user) {
-      return res.status(401).send({ status: false, msg: "User not found" });
+      return res.status(404).send({ status: false, msg: "User not found" });
     }
 
     if (user._id.toString() !== userId) {
       return res.status(401).send({ status: false, msg: "Unauthorized user" });
     }
 
-    if (req.user._id.toString() !== userId) {
-      return res.status(401).send({ status: false, msg: "User not found" });
-    }
+    // if (req.user._id.toString() !== userId) {
+    //   return res.status(401).send({ status: false, msg: "User not found" });
+    // }
 
     // console.log(req.user._id.toString());
     // console.log(userId);
-    
 
     if (["master", "distributer", "retailer"].includes(user.role)) {
       return res.status(200).send({ status: true, msg: "Success", data: user });
     } else {
-      return res.status(401).send({
+      return res.status(400).send({
         status: false,
         msg: "User does not have the required role",
       });
@@ -327,51 +336,84 @@ const getUserById = async (req, res) => {
   }
 };
 
-const getAllMaster = async (req, res) => {
+const getAllDistributers = async (req, res) => {
   try {
-    let masters = await userModel.find({ role: "master" });
-    // console.log(masters)
-    let parentId = req.user._id.toString();
-    // console.log(parentId);
-
-    if (masters) {
-      if (req.user.role !== "admin") {
-        return res.status(400).send({
-          status: false,
-          msg: "You are not authorized to perform this operation",
-        });
-      }
+    if (req.user.role !== "admin" && req.user.role !== "master") {
+      return res.status(401).send({
+        status: false,
+        msg: "You are not authorized to perform this operation",
+      });
     }
-    let filteredMasters = masters.filter((master) => {
-      return master.parent_id.toString() === parentId;
-    });
-    // console.log(filteredMasters);
+
+    const distributers = await userModel.find({ role: "distributer" });
+
     return res
       .status(200)
-      .send({ status: true, msg: "Success", data: filteredMasters });
+      .send({ status: true, msg: "Success", data: distributers });
   } catch (error) {
     console.log(error);
     return res.status(500).send({ status: false, msg: error.message });
   }
 };
 
-const getAllDistributers = async (req, res) => {
+const getAllRetailer = async (req, res) => {
   try {
-    let distributers = await userModel.find({ role: "distributer" });
-    // console.log(distributers);
-    // console.log(req.user.role);
-    if (distributers) {
-      if (req.user.role !== "admin" && req.user.role !== "master") {
-        return res
-          .status(200)
-          .send({ status: true, msg: "Success", data: distributers });
-      }
-    } else {
+    if (
+      req.user.role !== "admin" &&
+      req.user.role !== "master" &&
+      req.user.role !== "distributer"
+    ) {
       return res.status(401).send({
         status: false,
         msg: "You are not authorized to perform this operation",
       });
     }
+
+    const retailers = await userModel.find({ role: "retailer" });
+
+    return res
+      .status(200)
+      .send({ status: true, msg: "Success", data: retailers });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: false, msg: error.message });
+  }
+};
+
+const getAllMaster = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(401).send({
+        status: false,
+        msg: "You are not authorized to perform this operation",
+      });
+    }
+
+    const masters = await userModel.find({ role: "master" });
+
+    return res
+      .status(200)
+      .send({ status: true, msg: "Success", data: masters });
+  } catch (error) {
+    console.log(error);
+    return res.status(500).send({ status: false, msg: error.message });
+  }
+};
+
+const users = async (req, res) => {
+  try {
+    if (req.user.role !== "admin") {
+      return res.status(401).send({
+        status: false,
+        msg: "You are not authorized to perform this operation",
+      });
+    }
+
+    let users = await userModel.find({});
+
+    return res.status(200).send({ status: true, msg: "Success", data: users });
+
+
   } catch (error) {
     console.log(error);
     return res.status(500).send({ status: false, msg: error.message });
@@ -385,4 +427,6 @@ module.exports = {
   getUserById,
   getAllMaster,
   getAllDistributers,
+  getAllRetailer,
+  users
 };

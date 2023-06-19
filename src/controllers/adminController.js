@@ -6,10 +6,9 @@ const jwt = require("jsonwebtoken");
 
 const createAdmin = async (req, res) => {
   try {
-    let name = req.body.name;
-    let password = req.body.password;
-    let email = req.body.email;
-    let role = req.body.role;
+
+    let {name,email,password,role}= req.body
+
     let parent_id = null;
 
     password = await bcrypt.hash(password, 10);
@@ -21,6 +20,7 @@ const createAdmin = async (req, res) => {
       role: role,
       parent_id: parent_id,
     });
+    
     let savedUser = await newUser.save();
     // if (savedUser) {
     //   let token = jwt.sign(
@@ -81,7 +81,7 @@ const adminLogin = async (req, res) => {
     // Generate JWT token
     const token = jwt.sign(
       {
-        userId: user._id.toString(),
+        userID: user._id.toString(),
         otp: generatedOTP,
       },
       process.env.SECRET_KEY,

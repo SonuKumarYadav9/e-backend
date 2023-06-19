@@ -20,6 +20,12 @@ const adminShema = new mongoose.Schema(
         type: String,
         default: 'admin',
       },
+
+      balance:{
+        type:Number,
+        default:0
+      },
+      
     },
   { timestamps: true }
 );

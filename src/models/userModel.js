@@ -21,7 +21,12 @@ const userSchema = new mongoose.Schema(
         type: String,
         required: true,
       },
+      pin:{
+        type:String,
+        required:true
+      },
       
+
       role: {
         type: String,
         enum: [ 'master', 'distributer', 'retailer'],
@@ -78,6 +83,11 @@ const userSchema = new mongoose.Schema(
       },
       block: {
         type: String,
+      },
+      
+      balance:{
+        type:Number,
+        default:0
       },
 
     },
