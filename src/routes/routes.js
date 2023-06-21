@@ -12,12 +12,19 @@ const middleware = require("../middlewares/auth");
 
 const { createAdmin, adminLogin } = adminController;
 
-const { createUser,userLogin,checkOTP,getUserById, getAllDistributers, getAllRetailer,getAllMaster,users } = userController
+const { createUser,userLogin,checkOTP,getUserById, getAllDistributers, getAllRetailer,getAllMaster,users,updateUser } = userController
 
 const { authMiddleware } = middleware;
 
 const { operatorFetch,offerCheck,mobileRecharge }=require("../controllers/rechargeController")
 
+
+const { generateMonthlyReport, generateDailyReport } = require("../controllers/adminShortRecordController")
+
+
+
+
+//🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢  API  🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 
 
 
@@ -43,6 +50,7 @@ router.get('/masters',authMiddleware, getAllMaster)
 router.get('/distributers',authMiddleware, getAllDistributers)
 router.get('/retailers',authMiddleware, getAllRetailer)
 router.get('/users',authMiddleware, users)
+router.put('/user/update/:id',authMiddleware, updateUser)
 
 
 //*!USERS
@@ -54,5 +62,10 @@ router.get("/user/:id",authMiddleware, getUserById)
 router.post("/mobile-plans", authMiddleware, offerCheck );
 router.post("/operator-fetch",authMiddleware, operatorFetch );
 router.post("/recharge/:id", authMiddleware,mobileRecharge  );
+
+//* Monthly Report API 
+router.get('/daily-report',generateDailyReport)
+router.get('/monthly-report',generateMonthlyReport)
+
 
 module.exports = router;

@@ -152,6 +152,7 @@ const adminShortRecord = new mongoose.Schema({
         },
       },
 
+      
       rechargeReport: {
         totalRecharges: {
           type: Number,
@@ -271,6 +272,8 @@ const adminShortRecord = new mongoose.Schema({
       },
     },
   ],
+
+  
 });
 
 module.exports = mongoose.model("admin-shortrecord", adminShortRecord);
