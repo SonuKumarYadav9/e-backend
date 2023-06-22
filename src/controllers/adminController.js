@@ -1,8 +1,9 @@
-const adminModel = require("../models/adminModel");
-const userModel = require("../models/userModel");
-const otpModel = require("../models/otp")
-const bcrypt = require("bcrypt");
-const jwt = require("jsonwebtoken");
+
+import adminModel from "../models/admin/adminModel.js";
+import otpModel from "../models/otp/otp.js";
+import bcrypt from "bcrypt";
+import jwt from "jsonwebtoken";
+
 
 const createAdmin = async (req, res) => {
   try {
@@ -104,4 +105,9 @@ const adminLogin = async (req, res) => {
 
 
 
-module.exports = { createAdmin, adminLogin };
+
+
+
+export default { createAdmin, adminLogin };
+
+

@@ -1,4 +1,5 @@
-const mongoose = require('mongoose');
+// const mongoose = require('mongoose');
+import mongoose from 'mongoose'
 
 const rechargeSchema = new mongoose.Schema({
   mobile: {
@@ -21,4 +22,4 @@ const rechargeSchema = new mongoose.Schema({
   },
 });
 
-module.exports = mongoose.model('recharge', rechargeSchema);
+export default mongoose.model('recharge', rechargeSchema);

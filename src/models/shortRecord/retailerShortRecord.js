@@ -1,4 +1,6 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from 'mongoose'
+
 
 const retailerShortRecord = mongoose.Schema(
   {
@@ -80,4 +82,4 @@ const retailerShortRecord = mongoose.Schema(
   { timestamps: true }
 );
 
-module.exports = mongoose.model("r-shortrecord", retailerShortRecord);
+export default mongoose.model("r-shortrecord", retailerShortRecord);

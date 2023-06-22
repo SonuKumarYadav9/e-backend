@@ -1,6 +1,6 @@
 
-import adminShortRecord from '../models/shortRecord/shortRecordAdmin.js'
-import userModel from '../models/user/userModel.js'
+import adminShortRecord from '../../../models/shortRecord/shortRecordAdmin.js'
+import userModel from '../../../models/user/userModel.js'
 
 
 //Not tested YET 

@@ -1,13 +1,9 @@
-const {
-  offerCheckUrl,
-  operatorFetchApi,
-  rechargeAPi,
-} = require("../helper/externalApi");
-const axios = require("axios");
-const userModel = require("../models/userModel");
-const adminModel = require("../models/adminModel");
-const rechargeModel = require("../models/rechargeModel");
-const geoip = require("geoip-lite");
+import axios from "axios";
+import userModel from "../models/user/userModel.js";
+import adminModel from "../models/admin/adminModel.js";
+import rechargeModel from "../models/recharge/rechargeModel.js";
+import geoip from "geoip-lite";
+import { operatorFetchApi, rechargeAPi } from "../helper/externalApi.js";
 
 const operatorFetch = (req, res) => {
   const { mobile } = req.body; // taking mobile no from query
@@ -39,7 +35,7 @@ const operatorFetch = (req, res) => {
     });
 };
 
-const offerCheck = (req, res) => {
+const offerCheckApi = (req, res) => {
   try {
     const { mobile, operator } = req.body;
     let apiUrl = "";
@@ -90,8 +86,7 @@ const mobileRecharge = async (req, res) => {
     const location = geoip.lookup(ip);
 
     if (location) {
-      const latitude = location.ll[0];
-      const longitude = location.ll[1];
+      const [latitude, longitude] = location.ll;
       // do something with the latitude and longitude
 
       var GEOCode = `${latitude},${longitude}`;
@@ -122,14 +117,16 @@ const mobileRecharge = async (req, res) => {
     await recharge.save();
 
     // Process the commission for the user and its parent hierarchy
-    const user = await userModel.findOne({ _id: req.params.id }).select({
-      name: 1,
-      email: 1,
-      mobile: 1,
-      balance: 1,
-      role: 1,
-      parent_id: 1,
-    });
+    const user = await userModel
+      .findOne({ _id: req.params.id })
+      .select({
+        name: 1,
+        email: 1,
+        mobile: 1,
+        balance: 1,
+        role: 1,
+        parent_id: 1,
+      });
     if (!user) {
       return res.status(404).json({ error: "User not found" });
     }
@@ -146,105 +143,69 @@ const mobileRecharge = async (req, res) => {
     const commissionAmount = amount * commissionPercentage;
 
     // Add the commission to the user's balance
-    user.balance = (parseFloat(user.balance) + amount * 0.025).toFixed(2);
+    user.balance = (
+      parseFloat(user.balance) + amount * 0.025
+    ).toFixed(2);
     await user.save();
 
-
     // Assign the commission to the parent hierarchy
-// let parentUser = user;
-// let parentCommissionPercentage = 0.005; // 0.5% for intermediate parents
-// let remainingCommission = amount * 0.015; // 1.5% remaining commission after the retailer
-
-// while (parentUser.parent_id) {
-//   let parent;
-//   if (parentUser.role === "distributor" || parentUser.role === "retailer") {
-//     parent = await userModel.findOne({ _id: parentUser.parent_id });
-//   } else if (parentUser.role === "master") {
-//     parent = await adminModel.findOne({ _id: parentUser.parent_id });
-//   }
-
-//   if (!parent) {
-//     break;
-//   }
-
-//   parentUser = parent;
-
-//   // Calculate the commission percentage for the current parent
-//   let currentCommissionPercentage = parentCommissionPercentage;
-
-//   // Check if it's the last parent (retailer)
-//   if (!parentUser.parent_id) {
-//     currentCommissionPercentage = 1 - (2.5 / 100); // Remaining commission after giving 2.5% to the user
-//   }
-
-//   parentUser.balance = (
-//     parseFloat(parentUser.balance) + remainingCommission * currentCommissionPercentage
-//   ).toFixed(2);
-
-//   await parentUser.save();
-
-//   remainingCommission -= remainingCommission * parentCommissionPercentage;
-// }
-
-    // Return the response from the API to the client
-   
-
-  
     let parentUser = user;
     let parentCommissionPercentage = 0.005; // 0.5% for intermediate parents
     let remainingCommission = amount * 0.015; // 1.5% remaining commission after the retailer
-    
+
     const parentHierarchy = []; // Store the parent hierarchy
-    
+
     while (parentUser.parent_id) {
       let parent;
-      if (parentUser.role === "distributor" || parentUser.role === "retailer") {
+      if (
+        parentUser.role === "distributor" ||
+        parentUser.role === "retailer"
+      ) {
         parent = await userModel.findOne({ _id: parentUser.parent_id });
       } else if (parentUser.role === "master") {
         parent = await adminModel.findOne({ _id: parentUser.parent_id });
       }
-    
+
       if (!parent) {
         break;
       }
-    
+
       parentUser = parent;
-    
+
       parentHierarchy.unshift(parentUser); // Add the parent to the beginning of the hierarchy array
     }
-    
+
     const totalParents = parentHierarchy.length;
     console.log(totalParents);
 
-    
     // Distribute the remaining commission among the parents
-   if (totalParents === 1) {
-  const currentParent = parentHierarchy[0];
-  currentParent.balance = (
-    parseFloat(currentParent.balance) + remainingCommission
-  ).toFixed(2);
-  await currentParent.save();
-} else {
-  const individualCommissionPercentage = 0.5 / totalParents;
-  for (let i = 0; i < totalParents; i++) {
-    const currentParent = parentHierarchy[i];
-    const currentCommissionPercentage = i === totalParents - 1 ? remainingCommission / 100 : individualCommissionPercentage;
-    const commissionAmount = remainingCommission * currentCommissionPercentage;
+    if (totalParents === 1) {
+      const currentParent = parentHierarchy[0];
+      currentParent.balance = (
+        parseFloat(currentParent.balance) + remainingCommission
+      ).toFixed(2);
+      await currentParent.save();
+    } else {
+      const individualCommissionPercentage = 0.5 / totalParents;
+      for (let i = 0; i < totalParents; i++) {
+        const currentParent = parentHierarchy[i];
+        const currentCommissionPercentage =
+          i === totalParents - 1
+            ? remainingCommission / 100
+            : individualCommissionPercentage;
+        const commissionAmount = remainingCommission * currentCommissionPercentage;
 
-    currentParent.balance = (
-      parseFloat(currentParent.balance) + commissionAmount
-    ).toFixed(2);
+        currentParent.balance = (
+          parseFloat(currentParent.balance) + commissionAmount
+        ).toFixed(2);
 
-    await currentParent.save();
+        await currentParent.save();
 
-    remainingCommission -= commissionAmount;
-  }
-}
+        remainingCommission -= commissionAmount;
+      }
+    }
 
-
-
-    
-   
+    // Return the response from the API to the client
     return res.status(200).json({
       apiResponse: apiResponse.data,
       commissionAmount,
@@ -256,4 +217,8 @@ const mobileRecharge = async (req, res) => {
   }
 };
 
-module.exports = { operatorFetch, offerCheck, mobileRecharge };
+export default {
+  operatorFetch,
+  offerCheckApi,
+  mobileRecharge,
+};

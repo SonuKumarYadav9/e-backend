@@ -1,20 +1,10 @@
-const userModel = require("../models/userModel");
-const jwt = require("jsonwebtoken");
-const bcrypt = require("bcrypt");
-const otpModel = require("../models/otp");
 
-const {
-  namRegex,
-  emailRegex,
-  phoneRegex,
-  bankRegex,
-  panRegex,
-  passwordRegex,
-  addressRegex,
-  cityRegex,
-  pincodeRegex,
-  stateRegex,
-} = require("../validations/validation");
+import userModel from "../models/user/userModel.js";
+import jwt from "jsonwebtoken";
+import bcrypt from "bcrypt";
+import otpModel from "../models/otp/otp.js";
+
+// import {namRegex,emailRegex,phoneRegex,bankRegex,panRegex,passwordRegex,addressRegex,cityRegex,pincodeRegex,stateRegex,} from "../validations/validation.js";
 
 const createUser = async (req, res) => {
   try {
@@ -67,7 +57,6 @@ const createUser = async (req, res) => {
         .status(400)
         .send({ status: false, msg: "Please enter a valid email" });
     }
-
 
     let checkEmail = await userModel.findOne({ email: email });
     console.log(checkEmail);
@@ -255,7 +244,7 @@ const userLogin = async (req, res) => {
     } else {
       return res.status(400).json({
         message: "Please select a valid role: MASTER, DISTRIBUTER, RETAILER",
-      }); 
+      });
     }
   } catch (error) {
     console.log(error);
@@ -412,21 +401,27 @@ const users = async (req, res) => {
     let users = await userModel.find({});
 
     return res.status(200).send({ status: true, msg: "Success", data: users });
-
-
   } catch (error) {
     console.log(error);
     return res.status(500).send({ status: false, msg: error.message });
   }
 };
 
-
 const updateUser = async (req, res) => {
   try {
-
-
     const { id } = req.params;
-    const { name, password, email, pin, address, mobile, account, bank, ifsc, shopeName } = req.body;
+    const {
+      name,
+      password,
+      email,
+      pin,
+      address,
+      mobile,
+      account,
+      bank,
+      ifsc,
+      shopeName,
+    } = req.body;
 
     const updateData = {};
 
@@ -471,24 +466,28 @@ const updateUser = async (req, res) => {
       updateData.shopeName = shopeName;
     }
 
-    const updatedUser = await userModel.findByIdAndUpdate(id, updateData, { new: true });
+    const updatedUser = await userModel.findByIdAndUpdate(id, updateData, {
+      new: true,
+    });
 
     if (!updatedUser) {
       return res.status(404).json({ error: "User not found" });
     }
 
-    return res.status(200).json({ status: true, msg: "User updated successfully", data: updatedUser });
+    return res
+      .status(200)
+      .json({
+        status: true,
+        msg: "User updated successfully",
+        data: updatedUser,
+      });
   } catch (error) {
     console.log(error);
     return res.status(500).json({ status: false, msg: error.message });
   }
 };
 
-
-
-
-
-module.exports = {
+export  default {
   createUser,
   userLogin,
   checkOTP,
@@ -497,5 +496,5 @@ module.exports = {
   getAllDistributers,
   getAllRetailer,
   users,
-  updateUser
+  updateUser,
 };

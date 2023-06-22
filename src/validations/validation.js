@@ -15,7 +15,7 @@ const passwordRegex = function (val) {
   let regx = /^[a-zA-Z0-9!@#$%^&*]{8,15}$/;
   return regx.test(val);
 };
-const addressRegex = function (val) {
+const addressRegex = (val) => {
   let regx = /^([a-zA-Z0-9!-/=* ]{2,50})*$/;
   return regx.test(val);
 };
@@ -47,12 +47,12 @@ const panRegex = (val) => {
   return regex.test(val);
 };
 
-module.exports = {
+export default {
   namRegex,
   phoneRegex,
   emailRegex,
   passwordRegex,
-  addressRegex,
+  // addressRegex,
   cityRegex,
   bankRegex,
   pincodeRegex,

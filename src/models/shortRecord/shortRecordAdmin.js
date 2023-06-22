@@ -1,4 +1,5 @@
-const mongoose = require("mongoose");
+// const mongoose = require("mongoose");
+import mongoose from 'mongoose'
 
 const adminShortRecord = new mongoose.Schema({
 
@@ -275,5 +276,4 @@ const adminShortRecord = new mongoose.Schema({
 
   
 });
-
-module.exports = mongoose.model("admin-shortrecord", adminShortRecord);
+export default mongoose.model("admin-shortrecord", adminShortRecord);
