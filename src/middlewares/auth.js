@@ -1,7 +1,3 @@
-// const adminModel = require("../models/adminModel");
-// const userModel = require("../models/userModel");
-// const jwt = require("jsonwebtoken");
-
 import adminModel from "../models/admin/adminModel.js";
 import userModel from "../models/user/userModel.js";
 import jwt from "jsonwebtoken";
@@ -49,4 +45,4 @@ const authMiddleware = async (req, res, next) => {
   }
 };
 
-export default { authMiddleware };
+export default  authMiddleware ;

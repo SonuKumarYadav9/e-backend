@@ -29,3 +29,14 @@ const commissionSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("pancard-commission", commissionSchema);
+
+//  JSON FILE
+
+// {
+//   "slab": "12",
+//   "type": "Flat",
+//   "APIClient": 0,
+//   "master": 0,
+//   "distributor": 0,
+//   "retailer": 0
+// }

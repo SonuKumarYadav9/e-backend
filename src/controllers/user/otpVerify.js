@@ -38,4 +38,4 @@ const checkOTP = async (req, res) => {
   };
 
 
-  export default { checkOTP }
+  export default  checkOTP

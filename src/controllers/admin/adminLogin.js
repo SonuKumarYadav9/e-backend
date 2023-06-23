@@ -54,4 +54,4 @@ const adminLogin = async (req, res) => {
   };
 
   
-export default { adminLogin };
+export default adminLogin ;

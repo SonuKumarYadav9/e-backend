@@ -1,7 +1,6 @@
-import adminModel from "../models/adminModel.js";
-import otpModel from "../models/otp.js";
+import adminModel from "../../models/admin/adminModel.js";
 import bcrypt from "bcrypt";
-import jwt from "jsonwebtoken";
+
 
 
 const createAdmin = async (req, res) => {
@@ -49,5 +48,4 @@ const createAdmin = async (req, res) => {
 };
 
 
-
-export default { createAdmin  };
+export default  createAdmin  

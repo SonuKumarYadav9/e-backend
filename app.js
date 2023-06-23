@@ -1,7 +1,6 @@
 import express from "express";
 import mongoose from "mongoose";
-import route from './src/routes/routes.js'
-// const route = require("./src/routes/routes.cjs")
+import  router from "./src/routes/routes.js";
 import multer from 'multer';
 import dotenv from 'dotenv';
 
@@ -22,7 +21,7 @@ mongoose.connect(process.env.D_B, {
     .then(() => console.log("Connected to Database"))
     .catch((e) => console.log(e));
 
-app.use("/api", route);
+app.use("/api/", router);
 
 app.listen(process.env.PORT, () => console.log(`Example app listening on port ${process.env.PORT}!`));
 

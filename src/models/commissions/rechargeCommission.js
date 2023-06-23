@@ -27,3 +27,18 @@ const rechargeCommissionSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("recharge-commission", rechargeCommissionSchema);
+
+
+
+// json File
+
+// {
+//   "operatorName": "",
+//   "type": "",
+//   "apiClient": 1,
+//   "master": 1,
+//   "distributer": 1,
+//   "retailer": 1
+// }
+
+

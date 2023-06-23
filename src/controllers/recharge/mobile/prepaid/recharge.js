@@ -1,7 +1,7 @@
 import { rechargeAPi } from "../../../../helper/externalApi.js";
 
 
-const mobileRecharge = async (req, res) => {
+ const mobileRecharge = async (req, res) => {
     try {
       const { mobile, amount } = req.body;
   
@@ -142,9 +142,9 @@ const mobileRecharge = async (req, res) => {
     }
   };
   
-  export default {
-    mobileRecharge,
-  };
+
+  export default mobileRecharge
+  
   
 
   

@@ -4,7 +4,7 @@ import userModel from '../../../models/user/userModel.js'
 
 
 //Not tested YET 
-const generateMonthlyReport = async (req, res) => {
+export const generateMonthlyReport = async (req, res) => {
   try {
     const currentDate = new Date();
     const firstDayOfMonth = new Date(currentDate.getFullYear(), currentDate.getMonth(), 1);
@@ -49,11 +49,9 @@ const generateMonthlyReport = async (req, res) => {
 };
 
 
-
-
 /// WORKING 
 
-const generateDailyReport = async (req, res) => {
+export const generateDailyReport = async (req, res) => {
   try {
     const dailyReport = await userModel.aggregate([
       {
@@ -104,4 +102,3 @@ const generateDailyReport = async (req, res) => {
 };
 
 
-export default { generateMonthlyReport, generateDailyReport };

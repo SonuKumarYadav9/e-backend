@@ -39,3 +39,19 @@ const commissionSchema = new mongoose.Schema({
 });
 
 export default mongoose.model("dmt-commission", commissionSchema);
+
+
+// it's jason file
+
+// {
+//   "ID": 1,
+//   "slab": {
+//     "min": 100,
+//     "max": 1000
+//   },
+//   "type": "Flat",
+//   "APIClient": 10,
+//   "master": 10,
+//   "distributor": 10,
+//   "retailer": 10
+// }

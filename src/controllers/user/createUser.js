@@ -1,7 +1,7 @@
-import userModel from "../models/userModel.js";
+import userModel from "../../models/user/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import otpModel from "../models/otp.js";
+import otpModel from "../../models/otp/otp.js";
 
 // import {namRegex,emailRegex,phoneRegex,bankRegex,panRegex,passwordRegex,addressRegex,cityRegex,pincodeRegex,stateRegex,} from "../validations/validation.js";
 
@@ -181,4 +181,4 @@ const createUser = async (req, res) => {
   }
 };
 
-export  default { createUser }
+export  default createUser

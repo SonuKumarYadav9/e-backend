@@ -32,4 +32,4 @@ const operatorFetch = (req, res) => {
   };
 
 
-  export default { operatorFetch }
+  export default  operatorFetch 

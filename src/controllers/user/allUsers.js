@@ -1,9 +1,8 @@
-import userModel from "../models/userModel.js";
-import bcrypt from "bcrypt";
+import userModel from "../../models/user/userModel.js";
 
 
 
-const getUserById = async (req, res) => {
+export const getUserById = async (req, res) => {
     try {
       let userId = req.params.id;
       let user = await userModel.findById(userId).select("-password");
@@ -39,7 +38,7 @@ const getUserById = async (req, res) => {
     }
   };
   
-  const getAllDistributers = async (req, res) => {
+  export const getAllDistributers = async (req, res) => {
     try {
       if (req.user.role !== "admin" && req.user.role !== "master") {
         return res.status(401).send({
@@ -59,7 +58,7 @@ const getUserById = async (req, res) => {
     }
   };
   
-  const getAllRetailer = async (req, res) => {
+  export const getAllRetailer = async (req, res) => {
     try {
       if (
         req.user.role !== "admin" &&
@@ -83,7 +82,7 @@ const getUserById = async (req, res) => {
     }
   };
   
-  const getAllMaster = async (req, res) => {
+  export const getAllMaster = async (req, res) => {
     try {
       if (req.user.role !== "admin") {
         return res.status(401).send({
@@ -103,7 +102,7 @@ const getUserById = async (req, res) => {
     }
   };
   
-  const users = async (req, res) => {
+  export const users = async (req, res) => {
     try {
       if (req.user.role !== "admin") {
         return res.status(401).send({
@@ -122,11 +121,3 @@ const getUserById = async (req, res) => {
   };
   
 
-  export  default {
-    getUserById,
-    getAllMaster,
-    getAllDistributers,
-    getAllRetailer,
-    users,
-  };
-  
