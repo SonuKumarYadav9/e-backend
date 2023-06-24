@@ -172,7 +172,7 @@ const createUser = async (req, res) => {
     return res.status(201).send({
       status: true,
       msg: "User Created Successfully",
-      data: newUser,
+      userId:newUser._id,
       token: token,
     });
   } catch (error) {

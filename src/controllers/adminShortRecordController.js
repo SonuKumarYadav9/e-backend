@@ -55,6 +55,7 @@ const generateMonthlyReport = async (req, res) => {
 
 const generateDailyReport = async (req, res) => {
   try {
+    
     const dailyReport = await userModel.aggregate([
       {
         $group: {

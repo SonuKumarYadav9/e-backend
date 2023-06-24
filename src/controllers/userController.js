@@ -252,7 +252,8 @@ const userLogin = async (req, res) => {
   }
 };
 
-const checkOTP = async (req, res) => {
+
+const checkOTP  =  async (req, res) => {
   try {
     const { userID, otp, token, name: encodedName } = req.query;
 

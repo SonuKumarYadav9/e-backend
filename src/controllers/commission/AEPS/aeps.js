@@ -17,13 +17,13 @@ export const createAEPScommission = async (req, res) => {
     // Save the commission to the database
     const savedCommission = await commission.save();
 
-    res.status(200).json({
+    res.status(201).json({
       status: "success",
       message: "Commission created successfully.",
       data: savedCommission,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
       status: false,
       message: "Failed to create commission.",
@@ -32,7 +32,7 @@ export const createAEPScommission = async (req, res) => {
   }
 };
 
-import mongoose from 'mongoose';
+
 
 export const updateAEPScommission = async (req, res) => {
   try {
@@ -46,15 +46,15 @@ export const updateAEPScommission = async (req, res) => {
       retailer,
     } = req.body;
 
-    let _id = commissionId.toString()
+    let _id = commissionId.toString();
 
     // Find the commission document by ID
-    const commission = await AEPSmodel.findById({_id});
+    const commission = await AEPSmodel.findById({ _id });             //* It will Fetch the data  
 
     if (!commission) {
       return res.status(404).json({
         status: false,
-        message: 'Commission not found.',
+        message: "Commission not found.",
       });
     }
 
@@ -70,15 +70,15 @@ export const updateAEPScommission = async (req, res) => {
     const updatedCommission = await commission.save();
 
     res.status(200).json({
-      status: 'success',
-      message: 'Commission updated successfully.',
+      status: "success",
+      message: "Commission updated successfully.",
       data: updatedCommission,
     });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     res.status(500).json({
       status: false,
-      message: 'Failed to update commission.',
+      message: "Failed to update commission.",
       msg: error.message,
     });
   }

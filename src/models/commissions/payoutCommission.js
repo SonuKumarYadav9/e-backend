@@ -1,28 +1,23 @@
 import mongoose from 'mongoose';
 
 
-const slabSchema = new mongoose.Schema({
-  min: {
-    type: Number,
-    required: true
-  },
-  max: {
-    type: Number,
-    required: true
-  }
-});
-
 const commissionSchema = new mongoose.Schema({
-    slab: {
-        type: {
-          name: {
-            type: Number,
-            required: true,
-          },
-          range: slabSchema,
-        },
+  slab: {
+    name: {
+      type: String,
+      required: true,
+    },
+    range: {
+      min: {
+        type: Number,
         required: true,
       },
+      max: {
+        type: Number,
+        required: true,
+      },
+    },
+  },
   type: {
     type: String,
     required: true,

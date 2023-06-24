@@ -1,18 +1,26 @@
-// const mongoose = require("mongoose");
+
 import mongoose from 'mongoose'
 
-
 const otpSchema = new mongoose.Schema({
-  userId: [{
+  userId: {
     type: mongoose.Schema.Types.ObjectId,
-    ref: "user",
-  }, {
-    type: mongoose.Schema.Types.ObjectId,
-    ref: "admin", 
-  }],
+    required: true,
+    refPath: 'userType',
+  },
+  userType: {
+    type: String,
+    required: true,
+    enum: ['master','distributer','retailer', 'admin'],
+  }, 
   otp: {
     type: Number,
   },
+  expiresAt: {
+    type: Date,
+    default: Date.now,
+    index: { expires: '1m' }, // Expire after 1 minute
+  },
 });
+
 
 export default mongoose.model("otp", otpSchema);

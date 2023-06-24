@@ -1,20 +1,15 @@
-import mongoose from "mongoose";
-
-const slabSchema = new mongoose.Schema({
-  min: {
-    type: Number,
-    required: true,
-  },
-  max: {
-    type: Number,
-    required: true,
-  },
-});
+import mongoose from 'mongoose';
 
 const commissionSchema = new mongoose.Schema({
-  slab:{
-    type: slabSchema,
-    required: true,
+  slab: {
+    min: {
+      type: Number,
+      required: true,
+    },
+    max: {
+      type: Number,
+      required: true,
+    },
   },
   type: {
     type: String,
@@ -36,22 +31,21 @@ const commissionSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
+
 });
 
-export default mongoose.model("dmt-commission", commissionSchema);
+export default mongoose.model('dmt-commission', commissionSchema);
 
 
 // it's jason file
-
 // {
-//   "ID": 1,
 //   "slab": {
 //     "min": 100,
-//     "max": 1000
+//     "max": 500
 //   },
-//   "type": "Flat",
-//   "APIClient": 10,
-//   "master": 10,
-//   "distributor": 10,
-//   "retailer": 10
+//   "type": "percent",
+//   "APIClient": 0.5,
+//   "master": 0.3,
+//   "distributor": 0.2,
+//   "retailer": 0.1
 // }
