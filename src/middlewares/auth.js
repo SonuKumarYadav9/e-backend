@@ -27,7 +27,7 @@ const authMiddleware = async (req, res, next) => {
       } else if (user) {
         req.user = user;
         // console.log(req.user);
-        // console.log(req.user.role);
+        console.log(req.user.role);
         next();
       } else {
         return res

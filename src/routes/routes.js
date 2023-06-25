@@ -10,7 +10,7 @@ import operatorFetch from '../../src/controllers/recharge/mobile/prepaid/operato
 import  mobileRecharge  from '../../src/controllers/recharge/mobile/prepaid/recharge.js'
 import  verifyOTP from '../controllers/OTP/otpVerify.js'
 import { generateMonthlyReport,generateDailyReport} from '../controllers/shortRecord/admin/adminShortRecord.js'
-import {getUserById,getAllMaster,getAllDistributers,getAllRetailer,users} from '../controllers/user/allUsers.js'
+import {getUsers} from '../controllers/user/allUsers.js'
 import updateUser from "../controllers/user/updateUser.js";
 import {createAEPScommission , updateAEPScommission } from '../controllers/commission/AEPS/aeps.js'
 import {createDMTcommission , updateDMTcommission } from '../controllers/commission/DMT/DMT.js'
@@ -37,14 +37,18 @@ router.post("/admin/login", adminLogin);
 // OTP Verification API
 router.post("/otp-verify", verifyOTP);
 // Admin Routes
-router.get('/masters', authMiddleware, getAllMaster);
-router.get('/distributers', authMiddleware, getAllDistributers);
-router.get('/retailers', authMiddleware, getAllRetailer);
-router.get('/users', authMiddleware, users);
+// router.get('/masters', authMiddleware, getAllMaster);
+// router.get('/distributers', authMiddleware, getAllDistributers);
+// router.get('/retailers', authMiddleware, getAllRetailer);
+router.post('/users', authMiddleware, getUsers);
+
+
+
+
 router.put('/user/update/:id', authMiddleware, updateUser);
 // User Routes
 router.post("/user/register", createUser);
-router.get("/user/:id", authMiddleware, getUserById);
+// router.get("/user/:id", authMiddleware, getUserById);
 router.post("/login/user", userLogin);
 
 // Recharge Plan APIs
