@@ -6,19 +6,32 @@ const rechargeSchema = new mongoose.Schema({
     type: Number,
     required: true,
   },
-//   operator: {
-//     type: String,
-//     enum: ['Airtel', 'BSNL', 'BSNL STV', 'Idea', 'Jio', 'Vodafone', 'VI'],
-//     required: true,
-//   },
+  operator: {
+    type: String,
+    required: true,
+  },
   amount: {
     type: Number,
     default: 0,
     required: true,
   },
+  commission:{
+    type:Number,
+  },
+  ownerId:{
+    type: mongoose.Schema.Types.ObjectId,
+  },
+  role:{
+    type:String,
+    required:true
+  },
   createdAt: {
     type: Date,
     default: Date.now,
+  },
+  updatedAt:{
+    type: Date,
+    default: Date.now,   //  commison ,ownerId , operator,
   },
 });
 

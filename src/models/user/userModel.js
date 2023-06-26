@@ -30,9 +30,11 @@ const userSchema = new mongoose.Schema(
       enum: ["master", "distributor", "retailer"],
       required: true,
     },
+    
     parent_id: {
       type: mongoose.Schema.Types.ObjectId,
     },
+
     aadhar: {
       type: Number,
       required: true,

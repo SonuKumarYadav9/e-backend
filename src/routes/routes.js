@@ -45,7 +45,7 @@ router.post("/login/user", userLogin);
 // Recharge Plan APIs
 router.post("/mobile-plans", authMiddleware, offerCheckApi);
 router.post("/operator-fetch", authMiddleware, operatorFetch);
-router.post("/recharge/:id", authMiddleware, mobileRecharge);
+router.post("/recharge", authMiddleware, mobileRecharge);
 
 // Monthly Report APIs
 router.post("/daily-report", generateDailyReport);
