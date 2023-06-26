@@ -10,9 +10,8 @@ const otpSchema = new mongoose.Schema({
   userType: {
     type: String,
     required: true,
-    enum: ['master','distributor','retailer', 'admin'],
+    enum: ['master','distributer','retailer', 'admin'],
   }, 
-  
   otp: {
     type: Number,
   },

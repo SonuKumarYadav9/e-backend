@@ -9,7 +9,7 @@ const userLogin = async (req, res) => {
 
     const user = await userModel.findOne({ email: email });
 
-    if (["distributor", "master", "retailer"].includes(role)) {
+    if (["distributer", "master", "retailer"].includes(role)) {
       if (!user) {
         return res.status(404).json({ message: "User Not Found" });
       }
