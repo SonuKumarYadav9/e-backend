@@ -1,13 +1,14 @@
 import { rechargeAPi } from "../../../../helper/externalApi.js";
 import userModel from "../../../../models/user/userModel.js";
 import rechargeModel from "../../../../models/recharge/rechargeModel.js";
+import rechargeCommissionRecord from "../../../../models/commissions/RechargeCommissionRecord/rechargeCommissionRecord.js";
 
 const mobileRecharge = async (req, res) => {
   try {
     const { mobile, amount, id, operator } = req.body;
 
-    if (!mobile || !amount || !id || !operator)
-      return res.status(500).json("Please Provide All Parameters");
+    if (!(mobile || amount || id || operator))
+      return res.status(400).json("Please Provide All Parameters");
 
     let user = await userModel.findById(id);
 
@@ -41,11 +42,18 @@ const mobileRecharge = async (req, res) => {
         );
 
 
-        // HERE BELOW YOU WILL SAVE DATABASE RECORD LIKE HOW MUCH WE HAVE GIVEN COMMISION TO WHOME AND WHAT WAS THE ROLE
+// HERE BELOW YOU WILL SAVE DATABASE RECORD LIKE HOW MUCH WE HAVE GIVEN COMMISION TO WHOME AND WHAT WAS THE ROLE
 
 
 
+const saveCommissionRecord = new rechargeCommissionRecord({
+              userId:Get_Parent_User._id,
+              name:Get_Parent_User.name,
+              commission,
+              role:Get_Parent_User.role
+});
 
+ const savedRecord = await saveCommissionRecord.save()
 
 
         Get_Parent_User = await userModel.findById(Get_Parent_User.parent_id);
@@ -71,6 +79,7 @@ const mobileRecharge = async (req, res) => {
       .status(200)
       .json({ status: true, msg: " Recharge success", data: data });
   } catch (error) {
+    console.log(error)
     res.status(500).json({ error: "Something went wrong" });
   }
 };
