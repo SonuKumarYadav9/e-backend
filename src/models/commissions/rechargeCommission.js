@@ -3,26 +3,32 @@ import mongoose from "mongoose";
 const rechargeCommissionSchema = new mongoose.Schema({
   operatorName: {
     type: String,
+    required:true
   },
   type: {
     type: String,
     enum: ["percent", "flat"],
+    required:true
   },
   apiClient: {
     type: Number,
     default: 1,
+    required:true
   },
   master: {
     type: Number,
     default: 1,
+    required:true
   },
   distributer: {
     type: Number,
     default: 1,
+    required:true
   },
   retailer: {
     type: Number,
     default: 1,
+    required:true
   },
 });
 

@@ -1,9 +1,19 @@
 import userModel from "../../models/user/userModel.js";
 import jwt from "jsonwebtoken";
 import bcrypt from "bcrypt";
-import otpModel from "../../models/otp/otp.js";
 
-// import {namRegex,emailRegex,phoneRegex,bankRegex,panRegex,passwordRegex,addressRegex,cityRegex,pincodeRegex,stateRegex,} from "../validations/validation.js";
+import {
+  namRegex,
+  emailRegex,
+  phoneRegex,
+  bankRegex,
+  panRegex,
+  passwordRegex,
+  addressRegex,
+  cityRegex,
+  pincodeRegex,
+  stateRegex,
+} from "../../validations/validation.js";
 
 const createUser = async (req, res) => {
   try {
@@ -172,7 +182,7 @@ const createUser = async (req, res) => {
     return res.status(201).send({
       status: true,
       msg: "User Created Successfully",
-      userId:newUser._id,
+      userId: newUser._id,
       token: token,
     });
   } catch (error) {
@@ -181,4 +191,4 @@ const createUser = async (req, res) => {
   }
 };
 
-export  default createUser
+export default createUser;

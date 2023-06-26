@@ -18,7 +18,7 @@ import  {createNSDLpanCommission, updateNSDLcommission } from '../controllers/co
 import  {createPANCommission, updatePANCommission } from '../controllers/commission/PAN/PAN.js' 
 import  {createPayoutCommission, updatePayoutCommission } from '../controllers/commission/Payout/payout.js' 
 import  {createRechargeCommission, updateRechargeCommission } from '../controllers/commission/Recharge/recharge.js' 
-
+import {createAadharpayCommission, updateAadharpayCommission}  from '../controllers/commission/AadharPay/aadharpay.js'
 
 //*Middleware
 
@@ -34,12 +34,11 @@ router.get("/", (req, res) => res.send("Hello World!"));
 router.post("/admin/register", createAdmin);
 // Admin Login API
 router.post("/admin/login", adminLogin);
+
 // OTP Verification API
 router.post("/otp-verify", verifyOTP);
-// Admin Routes
-// router.get('/masters', authMiddleware, getAllMaster);
-// router.get('/distributers', authMiddleware, getAllDistributers);
-// router.get('/retailers', authMiddleware, getAllRetailer);
+
+
 router.post('/users', authMiddleware, getUsers);
 
 
@@ -76,8 +75,11 @@ router.put("/update/pan-commission",updatePANCommission )
 router.post("/create/payout-commission",createPayoutCommission )
 router.put("/update/payout-commission",updatePayoutCommission )
 //*Recharge 
-router.post("/create/recharge-commission",createPayoutCommission )
-router.put("/update/recharge-commission",updatePayoutCommission )
+router.post("/create/recharge-commission",createRechargeCommission )
+router.put("/update/recharge-commission",updateRechargeCommission )
+//*Aadharpay 
+router.post("/create/aadharpay-commission",createAadharpayCommission )
+router.put("/update/aadharpay-commission",updateAadharpayCommission)
 
 
 

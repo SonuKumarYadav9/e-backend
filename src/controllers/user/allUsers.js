@@ -1,8 +1,5 @@
 import userModel from "../../models/user/userModel.js";
 
-
-
-
 //* working all retailer ,alldistributor ,all masters and get users by ID  nut not for update 
 
 export const getUsers = async (req, res) => {
@@ -43,9 +40,7 @@ export const getUsers = async (req, res) => {
 
     // Check if updateData is provided
     if (userId && updateData) {
-      const updatedUser = await userModel.findByIdAndUpdate(userId, updateData, {
-        new: true,
-      })
+      const updatedUser = await updateUserById(userId, updateData)
 
       return res.status(200).json({ status: true, msg: "User updated successfully", data: updatedUser });
     }
@@ -58,13 +53,16 @@ export const getUsers = async (req, res) => {
   }
 };
 
-//* FUNCTIONS 
 
+
+
+//* FUNCTIONS 
 export const getUsersByRole = async (role) => {
   try {
-    const users = await userModel.find({ role });
 
+    const users = await userModel.find({ role });
     return users;
+
   } catch (error) {
     console.log(error);
     return res.status(500).send({status:false,msg:"Failed to fetch users by role"}) 
@@ -76,7 +74,7 @@ export const getUserById = async (userId) => {
     const user = await userModel.findById(userId).select("-password");
 
     if (!user) {
-      return null; // User not found
+      return res.status(404).send({status:false,msg:"User not found"}) 
     }
 
     return user;

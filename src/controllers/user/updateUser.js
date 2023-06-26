@@ -2,8 +2,9 @@ import userModel from "../../models/user/userModel.js";
 
 const updateUser = async (req, res) => {
     try {
-      const { id } = req.params;
+  
       const {
+        id,
         name,
         password,
         email,

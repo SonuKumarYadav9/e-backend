@@ -5,12 +5,12 @@ export const createRechargeCommission = async (req, res) => {
       let data = req.body;
   
       const { operatorName, type, APIClient, master, distributor, retailer } = data;
-      if (!operatorName || !type || !APIClient || !master || !distributor || !retailer) {
+      if (!(operatorName || type || APIClient || master || distributor || retailer)) {
         return res
           .status(404)
           .send({ status: false, msg: "All field Are required" });
       }
-      let savedData = await PANmodel.create(data);
+      let savedData = await rechargeModel.create(data);
       return res
         .status(201)
         .send({ status: true, msg: "success", data: savedData });
@@ -29,7 +29,7 @@ export const createRechargeCommission = async (req, res) => {
       let data = req.body;
       let { operatorName, type, APIClient, master, distributor, retailer, commissionId } = data;
   
-      let user = await PANmodel.findById(commissionId);
+      let user = await rechargeModel.findById(commissionId);
   
       if (user) {
         let updatedData = {};
@@ -58,7 +58,7 @@ export const createRechargeCommission = async (req, res) => {
           updatedData.retailer = retailer;
         }
   
-        const updated = await PANmodel.findByIdAndUpdate(
+        const updated = await rechargeModel.findByIdAndUpdate(
           user._id,
           updatedData,
           { new: true }

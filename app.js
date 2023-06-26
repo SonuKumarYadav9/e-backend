@@ -1,5 +1,4 @@
 import express from "express";
-// import mongoose from "mongoose";
 import  router from "./src/routes/routes.js";
 import multer from 'multer';
 import dotenv from 'dotenv';
@@ -13,16 +12,8 @@ const app = express();
 app.use(express.urlencoded({ extended: true }));
 app.use(multer().any());
 app.use(express.json());
-// app.use(connectDB())
 
-// Database Coonection
-// mongoose.connect(process.env.D_B, {
-//     useNewUrlParser: true,
-//     useUnifiedTopology: true,
-// })
-//     .then(() => console.log("Connected to Database"))
-//     .catch((e) => console.log(e));
-
+//Database
 connectDB()
 
 app.use("/api/", router);
