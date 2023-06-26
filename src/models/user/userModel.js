@@ -84,6 +84,8 @@ const userSchema = new mongoose.Schema(
       default: 0,
     },
 
+
+
     fundRequest: {
       totalRequest: {
         type: Number,
@@ -102,6 +104,8 @@ const userSchema = new mongoose.Schema(
         default: 0,
       },
     },
+
+  
     rechargeReport: {
       totalRecharges: {
         type: Number,
@@ -120,6 +124,8 @@ const userSchema = new mongoose.Schema(
         default: 0,
       },
     },
+
+
     supportTicket: {
       totalTickets: {
         type: Number,
@@ -138,6 +144,8 @@ const userSchema = new mongoose.Schema(
         default: 0,
       },
     },
+
+
     panReports: {
       purchasedCoupan: {
         type: Number,
@@ -156,6 +164,8 @@ const userSchema = new mongoose.Schema(
         default: 0,
       },
     },
+
+
     aepsReport: {
       totalTransaction: {
         type: Number,
@@ -174,6 +184,8 @@ const userSchema = new mongoose.Schema(
         default: 0,
       },
     },
+
+
     dmtReport: {
       successTransaction: {
         type: Number,
@@ -188,8 +200,15 @@ const userSchema = new mongoose.Schema(
         default: 0,
       },
     },
+    createdAt:{
+      type:Date
+    },
+    updatedAt:{
+      type:Date
+    },
+
   },
-  { timestamps: true }
+  // { timestamps: true }
 );
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("user", userSchema);

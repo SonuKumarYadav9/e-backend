@@ -67,12 +67,24 @@ const createUser = async (req, res) => {
         .send({ status: false, msg: "Please enter a valid email" });
     }
 
-    let checkEmail = await userModel.findOne({ email: email });
-    console.log(checkEmail);
-    if (checkEmail) {
+    // let checkEmail = await userModel.findOne({ email: email });
+    // console.log(checkEmail);
+    if (user && (user.email === email)) {
       return res.status(400).send({
         status: false,
         msg: "This user and its email are already registered",
+      });
+    }
+    if (user && (user.aadhar === aadhar)) {
+      return res.status(400).send({
+        status: false,
+        msg: "This user and its aadhar is already registered",
+      });
+    }
+    if (user && (user.account === account)) {
+      return res.status(400).send({
+        status: false,
+        msg: "This user and its account is already registered",
       });
     }
 
@@ -85,14 +97,14 @@ const createUser = async (req, res) => {
     } else if (role === "retailer") {
       if (
         req.user.role === "admin" ||
-        req.user.role === "distributer" ||
+        req.user.role === "distributor" ||
         req.user.role === "master"
       ) {
         parent_id = req.user._id;
       } else {
         return res.status(401).send({ status: false, msg: "Unauthorized 1" });
       }
-    } else if (role === "distributer") {
+    } else if (role === "distributor") {
       if (req.user.role === "admin" || req.user.role === "master") {
         parent_id = req.user._id;
       } else {

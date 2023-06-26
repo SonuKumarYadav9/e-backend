@@ -6,14 +6,15 @@ export const getUsers = async (req, res) => {
   try {
     const { role, userId, updateData } = req.body;
 
-    // if (req.user.role !== "admin" || req.user.role !== "master" || req.user.role !== "distributor" ) {
-    //   return res.status(401).send({
-    //     status: false,
-    //     msg: "You are not authorized to perform this operation",
-    //   });
-    // }
+    if (!(req.user.role === "admin" || req.user.role === "master" || req.user.role === "distributor" )) {
+      return res.status(401).send({
+        status: false,
+        msg: "You are not authorized to perform this operation",
+      });
+    }
 
-    // console.log(req.user.role)
+
+    console.log(req.user.role)
 
     if(role){
       if(role === "admin"){
