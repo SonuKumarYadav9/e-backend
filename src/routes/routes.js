@@ -19,6 +19,10 @@ import {createPayoutCommission,updatePayoutCommission} from "../controllers/comm
 import {createRechargeCommission,updateRechargeCommission} from "../controllers/commission/Recharge/recharge.js";
 import {createAadharpayCommission,updateAadharpayCommission} from "../controllers/commission/AadharPay/aadharpay.js";
 
+
+import { getOperatorCatList } from "../controllers/recharge/BBPS/getOperatorCategoryList.js";
+
+
 //*Middleware
 import authMiddleware from "../middlewares/auth.js";
 
@@ -73,6 +77,11 @@ router.put("/update/recharge-commission", updateRechargeCommission);
 //*Aadharpay
 router.post("/create/aadharpay-commission", createAadharpayCommission);
 router.put("/update/aadharpay-commission", updateAadharpayCommission);
+
+
+router.get("/BBPS/category-list", getOperatorCatList);
+
+
 
 //🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢  //* API *//  🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢🟢
 

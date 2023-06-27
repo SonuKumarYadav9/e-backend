@@ -35,7 +35,7 @@ export const generateMonthlyReport = async (req, res) => {
       { new: true }
     );
 
-    console.log(adminRecord)
+    // console.log(adminRecord)
 
     if (!adminRecord) {
       return res.status(400).json({ status: false, msg: "Monthly report already exists" });
@@ -43,7 +43,7 @@ export const generateMonthlyReport = async (req, res) => {
 
     return res.status(200).json({ status: true, msg: "Admin Monthly Record", data: adminRecord });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({ status: false, msg: error.message });
   }
 };
@@ -53,6 +53,10 @@ export const generateMonthlyReport = async (req, res) => {
 export const generateDailyReport = async (req, res) => {
   try {
     const { fromDate, toDate } = req.body;
+
+
+    console.log("fromDate => "+fromDate)
+    console.log("toDate => "+toDate)
 
     const timestamp = fromDate;
     const date = new Date(timestamp);
@@ -155,7 +159,7 @@ export const generateDailyReport = async (req, res) => {
     // Return the daily report if transactions occurred within the last 24 hours
     return res.status(200).json({ status: true, msg: "Admin Daily Record", data: dailyReport });
   } catch (error) {
-    console.log(error);
+    // console.log(error);
     return res.status(500).json({ status: false, msg: error.message });
   }
 };

@@ -44,7 +44,7 @@ const mobileRecharge = async (req, res) => {
 
 // HERE BELOW YOU WILL SAVE DATABASE RECORD LIKE HOW MUCH WE HAVE GIVEN COMMISION TO WHOME AND WHAT WAS THE ROLE
 
-
+console.log("running =>")
 
 const saveCommissionRecord = new rechargeCommissionRecord({
               userId:Get_Parent_User._id,

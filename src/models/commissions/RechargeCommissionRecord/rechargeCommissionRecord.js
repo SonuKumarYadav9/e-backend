@@ -3,6 +3,7 @@ import mongoose from "mongoose";
 
 const rechargeCommissionRecord = new mongoose.Schema({
 
+    
     userId:{
         type: mongoose.Schema.Types.ObjectId,
     },

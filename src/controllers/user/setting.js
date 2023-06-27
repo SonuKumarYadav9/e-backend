@@ -3,6 +3,8 @@ import bcrypt from "bcrypt";
 import otpModel from "../../models/otp/otp.js";
 import adminModel from "../../models/admin/adminModel.js";
 
+
+
 const updateDetail = async (req, res) => {
   try {
     const {
@@ -75,23 +77,7 @@ const updateDetail = async (req, res) => {
       const updatedUser = await userModel.findByIdAndUpdate(id, updateData, {
         new: true,
       });
-
-      //*OTP SECTION
-      const generatedOTP = Math.floor(100000 + Math.random() * 900000);
-      console.log(generatedOTP);
-
-      const otpData = new otpModel({
-        userId: user._id,
-        userType: user.role,
-        otp: generatedOTP,
-      });
-      await otpData.save();
-
-      return res.status(200).json({
-        status: true,
-        msg: "OTP Sent",
-        // data: updatedUser,
-      });
+ 
     } else {
       let admin = await adminModel.findById(id);
       console.log(admin);
@@ -117,17 +103,6 @@ const updateDetail = async (req, res) => {
           { new: true }
         );
 
-        //*OTP SECTION FOr Admin
-        const generatedOTP = Math.floor(100000 + Math.random() * 900000); //* if we need then we can use otherwise not
-        console.log(generatedOTP);
-
-        const otpData = new otpModel({
-          userId: admin._id,
-          userType: admin.role,
-          otp: generatedOTP,
-        });
-        await otpData.save();
-
         return res.status(200).send({ status: true, msg: "OTP SENT " });
       }
     }
@@ -136,5 +111,7 @@ const updateDetail = async (req, res) => {
     return res.status(500).json({ status: false, msg: error.message });
   }
 };
+
+
 
 export default updateDetail;
